@@ -1,4 +1,4 @@
-# Steady-State Heat Equation. Part 1. The One-Dimensional Case
+#  Solving the Steady-State Heat Equation. Part 1. The One-Dimensional Case
 
 If the ends of a rod are held at constant temperatures, the temperature distribution along it can be found without a computer: it is linear. So why solve this problem numerically? Make it just a little more complicated — let heat be generated only in part of the rod, or move from a rod to a plate — and there is no longer a simple analytical solution, so numerical methods become necessary. The one-dimensional problem is a convenient testing ground: the methods are easy to understand on it, and the answer is known in advance, so each method can be checked.
 
