@@ -1,4 +1,4 @@
-function [U, iter, residual] = gausse_zeidel(U, tol, maxIterations)
+function [U, iter, residual] = gauss_seidel(U, tol, maxIterations)
   % iter     - число выполненных итераций
   % residual - max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
   % tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
@@ -32,7 +32,7 @@ function [U, iter, residual] = gausse_zeidel(U, tol, maxIterations)
   residual = max(abs(U(1:end-2) - 2*U(2:end-1) + U(3:end)));
 
   if(~converged)
-    warning('gausse_zeidel: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...
+    warning('gauss_seidel: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...
             maxIterations, delta, residual);
   end
 end

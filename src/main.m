@@ -5,8 +5,8 @@ addpath(fullfile(pwd, 'methods', 'iterative-methods'));
 
 %% Физические параметры
 L = 1; % длина стержня, [м]
-TL = 100; % Температура слева, [град]
-TR = 20; % Температура справа, [град]
+TL = 100; % Температура слева, [°C]
+TR = 20; % Температура справа, [°C]
 
 %% Расчётные параметры
 nx = 50;
@@ -33,12 +33,12 @@ T(end) = TR;
 %% Решения
 
 % 1. Прямые
-T_gausse = gausse(T);
+T_gauss = gauss(T);
 T_thomas = thomas(T);
 
 % 2. Итерационные
-T_jacoby = jacobi(T, tol, maxIterations);
-T_zeidel = gausse_zeidel(T, tol, maxIterations);
+T_jacobi = jacobi(T, tol, maxIterations);
+T_seidel = gauss_seidel(T, tol, maxIterations);
 T_sor = sor(T, tol, maxIterations, omega);
 
 
@@ -47,14 +47,14 @@ T_sor = sor(T, tol, maxIterations, omega);
 %% Демонстрация решения
 figure(1), clf, hold on
 plot(x, T_exact, 'r', 'LineWidth', 2);
-plot(x, T_jacoby, 'b', 'LineWidth', 2);
-plot(x, T_zeidel, 'g', 'LineWidth', 2);
+plot(x, T_jacobi, 'b', 'LineWidth', 2);
+plot(x, T_seidel, 'g', 'LineWidth', 2);
 plot(x, T_sor, 'm', 'LineWidth', 2);
-plot(x, T_gausse, 'k', 'LineWidth', 2);
+plot(x, T_gauss, 'k', 'LineWidth', 2);
 plot(x, T_thomas, 'c', 'LineWidth', 2);
 grid on;
 xlabel('x, m');
-ylabel('T, grad');
-legend('exact solution', 'Jacobi method', 'Gausse-Zeidel method', 'SOR method', 'Gausse method', 'Thomas method');
+ylabel('T, ^\circC');
+legend('exact solution', 'Jacobi method', 'Gauss-Seidel method', 'SOR method', 'Gauss method', 'Thomas method');
 title('Temperature');
 hold off
