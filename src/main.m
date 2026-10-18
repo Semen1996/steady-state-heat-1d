@@ -1,14 +1,14 @@
-clear all;
+clear; close all;
 %% Добавление папки с методами
 addpath(fullfile(pwd, 'methods', 'direct-methods'));
 addpath(fullfile(pwd, 'methods', 'iterative-methods'));
 
 %% Физические параметры
-L = 1; % длина пластинки, [м]
+L = 1; % длина стержня, [м]
 TL = 100; % Температура слева, [град]
 TR = 20; % Температура справа, [град]
 
-%% Рачетные параметры
+%% Расчётные параметры
 nx = 50;
 dx = L / (nx - 1);
 x = 0:dx:L;
