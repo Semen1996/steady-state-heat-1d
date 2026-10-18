@@ -1,9 +1,19 @@
-function [U, iter, residual] = sor(U)
+function [U, iter, residual] = sor(U, tol, maxIterations, omega)
   % iter     - число выполненных итераций
   % residual - max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
+  % tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
+  % maxIterations - наибольшее число итераций (по умолчанию 10000)
+  % omega         - параметр релаксации, 0 < omega < 2 (по умолчанию 1.5)
   nx = length(U);
-  maxIterations = 10000;
-  omega = 1.5;
+  if(nargin < 2 || isempty(tol))
+    tol = 1e-5;
+  end
+  if(nargin < 3 || isempty(maxIterations))
+    maxIterations = 10000;
+  end
+  if(nargin < 4 || isempty(omega))
+    omega = 1.5;
+  end
 
   UOld = U;
   converged = false;
@@ -16,7 +26,7 @@ function [U, iter, residual] = sor(U)
 
     delta = max(abs(UOld - U), [], 'all');
 
-    if(delta <= 1e-5)
+    if(delta <= tol)
       converged = true;
       break;
     end

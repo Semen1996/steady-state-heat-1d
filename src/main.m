@@ -13,6 +13,10 @@ nx = 50;
 dx = L / (nx - 1);
 x = 0:dx:L;
 
+% Параметры итерационных методов
+tol = 1e-5; % порог max|T^(k+1) - T^(k)|
+maxIterations = 10000;
+omega = 1.5; % параметр релаксации SOR
 
 % Коэффициенты
 c2 = TL;
@@ -33,9 +37,9 @@ T_gausse = gausse(T);
 T_thomas = thomas(T);
 
 % 2. Итерационные
-T_jacoby = jacobi(T);
-T_zeidel = gausse_zeidel(T);
-T_sor = sor(T);
+T_jacoby = jacobi(T, tol, maxIterations);
+T_zeidel = gausse_zeidel(T, tol, maxIterations);
+T_sor = sor(T, tol, maxIterations, omega);
 
 
 
