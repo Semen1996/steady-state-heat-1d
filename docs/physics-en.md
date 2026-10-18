@@ -545,4 +545,4 @@ Let us gather the methods considered into one table:
 
 In the one-dimensional problem, iterative methods lose to the sweep. In the second part we will move on to the two-dimensional problem: each node will have four neighbours, the matrix will no longer be tridiagonal, the sweep will not be directly applicable, and the other direct methods will require too much memory. That is when iterative methods can become the main tool.
 
-MATLAB code for all the methods in this article: [link to repository].
+MATLAB code for all the methods in this article: [link to repository](https://github.com/Semen1996/steady-state-heat-1d).
