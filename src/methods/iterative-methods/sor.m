@@ -1,25 +1,25 @@
 function [T, iter, residual] = sor(T, tol, maxIterations, omega)
   % [T, iter, residual] = sor(T, tol, maxIterations, omega)
   %
-  % Метод последовательной верхней релаксации (SOR) для системы
+  % Successive over-relaxation (SOR) method for the system
   % T(i-1) - 2T(i) + T(i+1) = 0, i = 2..nx-1.
-  % Поправка метода Гаусса-Зейделя умножается на omega; при omega = 1
-  % получается метод Гаусса-Зейделя.
+  % The Gauss-Seidel correction is multiplied by omega; omega = 1
+  % gives the Gauss-Seidel method.
   %
-  % Вход:
-  %   T             - вектор-строка длины nx: начальное приближение;
-  %                   T(1) и T(end) - граничные температуры TL и TR
-  %   tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
-  %   maxIterations - наибольшее число итераций (по умолчанию 10000)
-  %   omega         - параметр релаксации, 0 < omega < 2 (по умолчанию 1.5)
+  % Input:
+  %   T             - row vector of length nx: initial guess;
+  %                   T(1) and T(end) are the boundary temperatures TL and TR
+  %   tol           - threshold for max|T^(k+1) - T^(k)| (default 1e-5)
+  %   maxIterations - maximum number of iterations (default 10000)
+  %   omega         - relaxation parameter, 0 < omega < 2 (default 1.5)
   %
-  % Выход:
-  %   T        - решение (граничные значения не меняются)
-  %   iter     - число выполненных итераций
-  %   residual - невязка max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
+  % Output:
+  %   T        - solution (boundary values are unchanged)
+  %   iter     - number of iterations performed
+  %   residual - residual max|T(i-1) - 2T(i) + T(i+1)| over interior nodes
   %
-  % Если за maxIterations итераций критерий max|T^(k+1) - T^(k)| <= tol
-  % не выполнен, выдаётся предупреждение.
+  % Issues a warning if the criterion max|T^(k+1) - T^(k)| <= tol
+  % is not met within maxIterations iterations.
 
 
   nx = length(T);
@@ -55,7 +55,7 @@ function [T, iter, residual] = sor(T, tol, maxIterations, omega)
   residual = max(abs(T(1:end-2) - 2*T(2:end-1) + T(3:end)));
 
   if(~converged)
-    warning('sor: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...
+    warning('sor: iteration limit reached (%d), max|dT| = %g, residual = %g', ...
             maxIterations, delta, residual);
   end
 end

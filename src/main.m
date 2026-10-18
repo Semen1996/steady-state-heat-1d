@@ -1,43 +1,44 @@
-% Стационарная теплопроводность в стержне: d²T/dx² = 0, T(0) = TL, T(L) = TR.
-% СЛАУ метода конечных разностей решается прямыми и итерационными методами, решения сравниваются с точным.
+% Steady-state heat conduction in a rod: d²T/dx² = 0, T(0) = TL, T(L) = TR.
+% The finite-difference linear system is solved by direct and iterative methods
+% and the results are compared with the exact solution.
 
 clear; close all;
-%% Добавление папки с методами
+%% Add the solver folders to the path
 addpath(fullfile(pwd, 'methods', 'direct-methods'));
 addpath(fullfile(pwd, 'methods', 'iterative-methods'));
 
-%% Физические параметры
-L = 1; % длина стержня, [м]
-TL = 100; % Температура слева, [°C]
-TR = 20; % Температура справа, [°C]
+%% Physical parameters
+L = 1; % rod length, [m]
+TL = 100; % left temperature, [°C]
+TR = 20; % right temperature, [°C]
 
-%% Расчётные параметры
+%% Grid parameters
 nx = 50;
 dx = L / (nx - 1);
 x = 0:dx:L;
 
-% Параметры итерационных методов
-tol = 1e-5; % порог max|T^(k+1) - T^(k)|
+% Iterative method parameters
+tol = 1e-5; % threshold for max|T^(k+1) - T^(k)|
 maxIterations = 10000;
-omega = 1.5; % параметр релаксации SOR
+omega = 1.5; % SOR relaxation parameter
 
 
-%% Начальное приближение
+%% Initial guess
 T = zeros(1,nx);
 T(1) = TL;
 T(end) = TR;
 
 
-%% Решения
+%% Solutions
 
-% 0. Точное
+% 0. Exact
 TExact = ( TR - TL ) / (L)*x + TL;
 
-% 1. Прямые
+% 1. Direct
 TGauss = gauss(T);
 TThomas = thomas(T);
 
-% 2. Итерационные
+% 2. Iterative
 TJacobi = jacobi(T, tol, maxIterations);
 TSeidel = gauss_seidel(T, tol, maxIterations);
 TSor = sor(T, tol, maxIterations, omega);
@@ -45,7 +46,7 @@ TSor = sor(T, tol, maxIterations, omega);
 
 
 
-%% Демонстрация решения
+%% Plot the solutions
 figure(1), clf, hold on
 plot(x, TExact, 'r', 'LineWidth', 2);
 plot(x, TJacobi, 'b', 'LineWidth', 2);

@@ -1,23 +1,23 @@
 function [T, iter, residual] = gauss_seidel(T, tol, maxIterations)
   % [T, iter, residual] = gauss_seidel(T, tol, maxIterations)
   %
-  % Метод Гаусса-Зейделя для системы T(i-1) - 2T(i) + T(i+1) = 0,
-  % i = 2..nx-1. Узлы обходятся слева направо,
-  % уже пересчитанное значение левого соседа используется сразу.
+  % Gauss-Seidel method for the system T(i-1) - 2T(i) + T(i+1) = 0,
+  % i = 2..nx-1. Nodes are swept from left to right, and the already
+  % updated value of the left neighbour is used immediately.
   %
-  % Вход:
-  %   T             - вектор-строка длины nx: начальное приближение;
-  %                   T(1) и T(end) - граничные температуры TL и TR
-  %   tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
-  %   maxIterations - наибольшее число итераций (по умолчанию 10000)
+  % Input:
+  %   T             - row vector of length nx: initial guess;
+  %                   T(1) and T(end) are the boundary temperatures TL and TR
+  %   tol           - threshold for max|T^(k+1) - T^(k)| (default 1e-5)
+  %   maxIterations - maximum number of iterations (default 10000)
   %
-  % Выход:
-  %   T        - решение (граничные значения не меняются)
-  %   iter     - число выполненных итераций
-  %   residual - невязка max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
+  % Output:
+  %   T        - solution (boundary values are unchanged)
+  %   iter     - number of iterations performed
+  %   residual - residual max|T(i-1) - 2T(i) + T(i+1)| over interior nodes
   %
-  % Если за maxIterations итераций критерий max|T^(k+1) - T^(k)| <= tol
-  % не выполнен, выдаётся предупреждение.
+  % Issues a warning if the criterion max|T^(k+1) - T^(k)| <= tol
+  % is not met within maxIterations iterations.
 
 
   if(nargin < 2 || isempty(tol))
@@ -49,7 +49,7 @@ function [T, iter, residual] = gauss_seidel(T, tol, maxIterations)
   residual = max(abs(T(1:end-2) - 2*T(2:end-1) + T(3:end)));
 
   if(~converged)
-    warning('gauss_seidel: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...
+    warning('gauss_seidel: iteration limit reached (%d), max|dT| = %g, residual = %g', ...
             maxIterations, delta, residual);
   end
 end

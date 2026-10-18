@@ -1,23 +1,23 @@
 function [T, iter, residual] = jacobi(T, tol, maxIterations)
   % [T, iter, residual] = jacobi(T, tol, maxIterations)
   %
-  % Метод Якоби для системы T(i-1) - 2T(i) + T(i+1) = 0, i = 2..nx-1
-  % Новое значение в узле считается по значениям
-  % соседей с предыдущей итерации.
+  % Jacobi method for the system T(i-1) - 2T(i) + T(i+1) = 0, i = 2..nx-1.
+  % The new value at a node is computed from the values
+  % of its neighbours at the previous iteration.
   %
-  % Вход:
-  %   T             - вектор-строка длины nx: начальное приближение;
-  %                   T(1) и T(end) - граничные температуры TL и TR
-  %   tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
-  %   maxIterations - наибольшее число итераций (по умолчанию 10000)
+  % Input:
+  %   T             - row vector of length nx: initial guess;
+  %                   T(1) and T(end) are the boundary temperatures TL and TR
+  %   tol           - threshold for max|T^(k+1) - T^(k)| (default 1e-5)
+  %   maxIterations - maximum number of iterations (default 10000)
   %
-  % Выход:
-  %   T        - решение (граничные значения не меняются)
-  %   iter     - число выполненных итераций
-  %   residual - невязка max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
+  % Output:
+  %   T        - solution (boundary values are unchanged)
+  %   iter     - number of iterations performed
+  %   residual - residual max|T(i-1) - 2T(i) + T(i+1)| over interior nodes
   %
-  % Если за maxIterations итераций критерий max|T^(k+1) - T^(k)| <= tol
-  % не выполнен, выдаётся предупреждение.
+  % Issues a warning if the criterion max|T^(k+1) - T^(k)| <= tol
+  % is not met within maxIterations iterations.
 
 
   nx = length(T);
@@ -49,7 +49,7 @@ function [T, iter, residual] = jacobi(T, tol, maxIterations)
   residual = max(abs(T(1:end-2) - 2*T(2:end-1) + T(3:end)));
 
   if(~converged)
-    warning('jacobi: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...
+    warning('jacobi: iteration limit reached (%d), max|dT| = %g, residual = %g', ...
             maxIterations, delta, residual);
   end
 end

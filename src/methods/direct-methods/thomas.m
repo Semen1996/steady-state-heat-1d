@@ -1,46 +1,47 @@
 function T = thomas(T)
     % T = thomas(T)
     %
-    % Метод прогонки (алгоритм Томаса) для системы
+    % Thomas algorithm (tridiagonal matrix algorithm) for the system
     % T(i-1) - 2T(i) + T(i+1) = 0, i = 2..nx-1.
-    % Хранятся только три диагонали a, b, c и правая часть d;
-    % прямой ход исключает нижнюю диагональ, обратный находит решение.
+    % Only the three diagonals a, b, c and the right-hand side d are stored;
+    % the forward sweep eliminates the lower diagonal, the backward sweep
+    % recovers the solution.
     %
-    % Вход:
-    %   T - вектор-строка длины nx; T(1) и T(end) - граничные температуры
-    %       TL и TR, внутренние значения не используются
+    % Input:
+    %   T - row vector of length nx; T(1) and T(end) are the boundary
+    %       temperatures TL and TR, interior values are ignored
     %
-    % Выход:
-    %   T - решение: тот же вектор с заполненными внутренними узлами
+    % Output:
+    %   T - solution: the same vector with the interior nodes filled in
 
 
     nx = length(T);
     n = nx - 2;
 
-    % Граничные температуры
+    % Boundary temperatures
     TL = T(1);
     TR = T(end);
 
-    % Коэффициенты трехдиагональной системы
-    a = ones(n, 1);       % Нижняя диагональ
-    b = -2 * ones(n, 1);  % Главная диагональ
-    c = ones(n, 1);       % Верхняя диагональ
-    d = zeros(n, 1);      % Правая часть
+    % Coefficients of the tridiagonal system
+    a = ones(n, 1);       % Lower diagonal
+    b = -2 * ones(n, 1);  % Main diagonal
+    c = ones(n, 1);       % Upper diagonal
+    d = zeros(n, 1);      % Right-hand side
 
-    % Учет граничных условий
+    % Boundary conditions
     a(1) = 0;
     c(end) = 0;
     d(1) = -TL;
     d(end) = -TR;
 
-    % Прямой ход прогонки
+    % Forward sweep
     for i = 2:n
         m = a(i) / b(i-1);
         b(i) = b(i) - m * c(i-1);
         d(i) = d(i) - m * d(i-1);
     end
 
-    % Обратный ход прогонки
+    % Backward sweep
     TInner = zeros(n, 1);
     TInner(n) = d(n) / b(n);
 
@@ -48,7 +49,7 @@ function T = thomas(T)
         TInner(i) = (d(i) - c(i) * TInner(i+1)) / b(i);
     end
 
-    % Записываем температуры внутренних узлов
+    % Store the interior temperatures
     T(2:end-1) = TInner.';
 end
 
