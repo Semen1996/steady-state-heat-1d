@@ -1,9 +1,9 @@
-function [U, iter, residual] = jacobi(U, tol, maxIterations)
+function [T, iter, residual] = jacobi(T, tol, maxIterations)
   % iter     - число выполненных итераций
   % residual - max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
   % tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
   % maxIterations - наибольшее число итераций (по умолчанию 10000)
-  nx = length(U);
+  nx = length(T);
   if(nargin < 2 || isempty(tol))
     tol = 1e-5;
   end
@@ -12,16 +12,16 @@ function [U, iter, residual] = jacobi(U, tol, maxIterations)
   end
 
 
-  UNew = U;
+  TNew = T;
   converged = false;
 
   for iter = 1:maxIterations
     for i = 2:nx-1;
-      UNew(i) = (U(i+1) + U(i-1)) /2;
+      TNew(i) = (T(i+1) + T(i-1)) /2;
     end
 
-    delta = max(abs(UNew - U), [], 'all');
-    U = UNew;
+    delta = max(abs(TNew - T), [], 'all');
+    T = TNew;
 
     if(delta <= tol)
       converged = true;
@@ -29,7 +29,7 @@ function [U, iter, residual] = jacobi(U, tol, maxIterations)
     end
   end
 
-  residual = max(abs(U(1:end-2) - 2*U(2:end-1) + U(3:end)));
+  residual = max(abs(T(1:end-2) - 2*T(2:end-1) + T(3:end)));
 
   if(~converged)
     warning('jacobi: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...

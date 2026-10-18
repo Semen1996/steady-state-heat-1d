@@ -22,7 +22,7 @@ omega = 1.5; % параметр релаксации SOR
 c2 = TL;
 c1 = ( TR - TL ) / (L);
 
-T_exact = c1*x + c2;
+TExact = c1*x + c2;
 
 %% Начальное приближение
 T = zeros(1,nx);
@@ -33,25 +33,25 @@ T(end) = TR;
 %% Решения
 
 % 1. Прямые
-T_gauss = gauss(T);
-T_thomas = thomas(T);
+TGauss = gauss(T);
+TThomas = thomas(T);
 
 % 2. Итерационные
-T_jacobi = jacobi(T, tol, maxIterations);
-T_seidel = gauss_seidel(T, tol, maxIterations);
-T_sor = sor(T, tol, maxIterations, omega);
+TJacobi = jacobi(T, tol, maxIterations);
+TSeidel = gauss_seidel(T, tol, maxIterations);
+TSor = sor(T, tol, maxIterations, omega);
 
 
 
 
 %% Демонстрация решения
 figure(1), clf, hold on
-plot(x, T_exact, 'r', 'LineWidth', 2);
-plot(x, T_jacobi, 'b', 'LineWidth', 2);
-plot(x, T_seidel, 'g', 'LineWidth', 2);
-plot(x, T_sor, 'm', 'LineWidth', 2);
-plot(x, T_gauss, 'k', 'LineWidth', 2);
-plot(x, T_thomas, 'c', 'LineWidth', 2);
+plot(x, TExact, 'r', 'LineWidth', 2);
+plot(x, TJacobi, 'b', 'LineWidth', 2);
+plot(x, TSeidel, 'g', 'LineWidth', 2);
+plot(x, TSor, 'm', 'LineWidth', 2);
+plot(x, TGauss, 'k', 'LineWidth', 2);
+plot(x, TThomas, 'c', 'LineWidth', 2);
 grid on;
 xlabel('x, m');
 ylabel('T, ^\circC');

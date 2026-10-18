@@ -29,13 +29,13 @@ function T = gauss(T)
     end
 
     % Обратная подстановка
-    Tint = zeros(n, 1);
-    Tint(n) = b(n) / d(n);
+    TInner = zeros(n, 1);
+    TInner(n) = b(n) / d(n);
 
     for i = n-1:-1:1
-        Tint(i) = (b(i) - Tint(i+1)) / d(i);
+        TInner(i) = (b(i) - TInner(i+1)) / d(i);
     end
 
-    T(2:end-1) = Tint.';
+    T(2:end-1) = TInner.';
 end
 

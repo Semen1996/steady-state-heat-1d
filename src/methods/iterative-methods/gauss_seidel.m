@@ -1,4 +1,4 @@
-function [U, iter, residual] = gauss_seidel(U, tol, maxIterations)
+function [T, iter, residual] = gauss_seidel(T, tol, maxIterations)
   % iter     - число выполненных итераций
   % residual - max|T(i-1) - 2T(i) + T(i+1)| по внутренним узлам
   % tol           - порог max|T^(k+1) - T^(k)| (по умолчанию 1e-5)
@@ -9,27 +9,27 @@ function [U, iter, residual] = gauss_seidel(U, tol, maxIterations)
   if(nargin < 3 || isempty(maxIterations))
     maxIterations = 10000;
   end
-  nx = length(U);
+  nx = length(T);
 
-  UOld = U;
+  TOld = T;
   converged = false;
 
   for iter = 1:maxIterations
     for i = 2:nx-1;
-      U(i) = (U(i+1) + U(i-1)) /2;
+      T(i) = (T(i+1) + T(i-1)) /2;
     end
 
-    delta = max(abs(UOld - U), [], 'all');
+    delta = max(abs(TOld - T), [], 'all');
 
     if(delta <= tol)
       converged = true;
       break;
     end
 
-    UOld = U;
+    TOld = T;
   end
 
-  residual = max(abs(U(1:end-2) - 2*U(2:end-1) + U(3:end)));
+  residual = max(abs(T(1:end-2) - 2*T(2:end-1) + T(3:end)));
 
   if(~converged)
     warning('gauss_seidel: достигнут лимит итераций (%d), max|dT| = %g, невязка = %g', ...

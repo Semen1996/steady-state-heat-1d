@@ -27,14 +27,14 @@ function T = thomas(T)
     end
 
     % Обратный ход прогонки
-    Tint = zeros(n, 1);
-    Tint(n) = d(n) / b(n);
+    TInner = zeros(n, 1);
+    TInner(n) = d(n) / b(n);
 
     for i = n-1:-1:1
-        Tint(i) = (d(i) - c(i) * Tint(i+1)) / b(i);
+        TInner(i) = (d(i) - c(i) * TInner(i+1)) / b(i);
     end
 
     % Записываем температуры внутренних узлов
-    T(2:end-1) = Tint.';
+    T(2:end-1) = TInner.';
 end
 
